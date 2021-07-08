@@ -9,6 +9,8 @@ var User = require('../models/user');
 // Require controller modules.
 //var user_controller = require('../controllers/userController');
 
+const {check,validationResult} = require('express-validator');
+
 
 passport.use(
   new LocalStrategy((username, password, done) => {
@@ -58,11 +60,10 @@ passport.deserializeUser(function(id, done) {
 router.get('/sign-up', (req, res) => res.render("sign-up-form"));
 
 
+/*
 router.post('/sign-up', (req, res, next) => {
   bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
 	  if(err){return next(err)};
-
-	  console.log(req.body.password);
 	  
 	  const user = new User({
 	  	name: "joe smoe",
@@ -77,7 +78,41 @@ router.post('/sign-up', (req, res, next) => {
 	});
   });
 
-});
+});*/
+
+router.post('/sign-up', [
+	check('username','Username must be an email address').isEmail().trim().escape().normalizeEmail(),
+	check('password').isLength({min:8}).withMessage('Password must be at least 8 characters long.')
+	.matches('[0-9]').withMessage('Password Must Contain a Number')
+	.matches('[A-Z]').withMessage('Password Must Contain an Uppercase Letter')
+	.trim().escape(),],
+
+	(req,res,next)=> {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+    		return res.status(422).json({ errors: errors.array() });
+		}
+		else
+		{
+			  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+				  if(err){return next(err)};
+				  
+				  const user = new User({
+				  	name: "joe smoe",
+				    username: req.body.username,
+				    password: hashedPassword,
+				    status: "admin",
+				  }).save(err => {
+				    if (err) { 
+				      return next(err);
+				    }
+				    res.redirect("/")
+				});
+			  });
+		}
+	}	
+
+);
 
 
 
@@ -90,6 +125,11 @@ router.post('/log-in',passport.authenticate("local", {
 router.get('/log-out',(req, res) => {
   req.logout();
   res.redirect("/");
+});
+
+
+router.get('/create-message',(req,res)=>{
+
 });
 
 router.get('/',(req, res) => {

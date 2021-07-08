@@ -26,6 +26,8 @@ app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -37,8 +39,8 @@ app.use(passport.session());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/', indexRouter);
-app.use('/home', mainRouter);
+//app.use('/', indexRouter);
+app.use('/', mainRouter);
 
 
 

@@ -2,21 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>Members Only</title>
+  <link rel='stylesheet' href='stylesheets/style.css' />
 </head>
 <body>
+  <div class="nav-bar">
   <% if (user) {%>
-    <h1>WELCOME BACK <%= user.username %></h1>
-    <a href="/log-out">LOG OUT</a>
+    <h1>Welcome Back <%= user.username %></h1>
+    <div class="nav-bar-btn-container">
+      <div class="nav-bar-btn"><a href="/create-message">Create Message</a></div>
+      <div class="nav-bar-btn"><a href="/log-out">Become a Member</a></div>
+      <div class="nav-bar-btn"><a href="/log-out">Become an Admin</a></div>
+      <div class="nav-bar-btn"><a href="/log-out">Log Out</a></div>
+    </div>
   <% } else { %>
-    <h1>please log in</h1>
-    <form action="/home/log-in" method="POST">
-      <label for="username">Username</label>
-      <input name="username" placeholder="username" type="text" />
-      <label for="password">Password</label>
-      <input name="password" type="password" />
-      <button>Log In</button>
-    </form>
+    <div class="nav-header">Members Only</div>
+      <div class="nav-bar-btn-container">
+        <div class="nav-bar-btn"><a href="/" class="link">Sign In</a></div>
+        <div class="nav-bar-btn"><a href="/sign-up" class="link">Sign Up</a></div>
+      </div>
+    </div>
+    <div class="log-in-container">
+      <div class="log-in-header">please log in</div>
+      <form action="/log-in" method="POST">
+        <label for="username">Username</label>
+        <input name="username" placeholder="username" type="text" />
+        <label for="password">Password</label>
+        <input name="password" type="password" />
+        <button>Log In</button>
+      </form>
+    </div>
   <%}%>
 </body>
 </html>

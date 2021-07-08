@@ -2,16 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>Members Only</title>
+  <link rel='stylesheet' href='stylesheets/style.css' />
 </head>
 <body>
-  <h1>Sign Up</h1>
-  <form action="" method="POST">
-    <label for="username">Username</label>
-    <input name="username" placeholder="username" type="text" />
-    <label for="password">Password</label>
-    <input name="password" type="password" />
-    <button>Sign Up</button>
-  </form>
+  <div class="nav-bar">
+    <div class="nav-header">Members Only</div>
+    <div class="nav-bar-btn-container">
+      <div class="nav-bar-btn"><a href="/" class="link">Sign In</a></div>
+      <div class="nav-bar-btn"><a href="/sign-up" class="link">Sign Up</a></div>
+    </div>
+  </div>
+  <div class="sign-up-header">Sign Up</div>
+  <div class="sign-up-container">
+    <form action="" method="POST">
+      <label for="username">Username</label>
+      <input name="username" placeholder="username" type="text" />
+      <label for="password">Password</label>
+      <input name="password" type="password" />
+      <button>Sign Up</button>
+    </form>
+  </div>
 </body>
 </html>
