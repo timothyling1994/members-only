@@ -22,10 +22,7 @@ db.on("error", console.error.bind(console, "mongo connection error"));
 
 
 const app = express();
-app.use(function(req, res, next) {
-  res.locals.currentUser = req.user;
-  next();
-});
+
 
 app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
@@ -38,6 +35,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.urlencoded({ extended: false }));
+
+/*app.use(function(req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});*/
 
 //app.use('/', indexRouter);
 app.use('/', mainRouter);

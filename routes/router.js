@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 var User = require('../models/user');
 
 // Require controller modules.
-//var user_controller = require('../controllers/userController');
+var message_controller = require('../controllers/messageController');
 
 const {check,validationResult} = require('express-validator');
 
@@ -48,37 +48,15 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
 	console.log("deserializing");
   User.findById(id, function(err, user) {
+  	//res.locals.currentUser = user;
     done(err, user);
   });
 });
 
 
 
-
-
-
 router.get('/sign-up', (req, res) => res.render("sign-up-form"));
 
-
-/*
-router.post('/sign-up', (req, res, next) => {
-  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
-	  if(err){return next(err)};
-	  
-	  const user = new User({
-	  	name: "joe smoe",
-	    username: req.body.username,
-	    password: hashedPassword,
-	    status: "admin",
-	  }).save(err => {
-	    if (err) { 
-	      return next(err);
-	    }
-	    res.redirect("/")
-	});
-  });
-
-});*/
 
 router.post('/sign-up', [
 	check('username','Username must be an email address').isEmail().trim().escape().normalizeEmail(),
@@ -116,24 +94,82 @@ router.post('/sign-up', [
 
 
 
-router.post('/log-in',passport.authenticate("local", {
-    successRedirect: "/",
+/*router.post('/log-in',passport.authenticate("local", {
+    successRedirect: "/home",
     failureRedirect: "/"
   })
-);
+);*/
+
+router.post('/log-in', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return next(err); }
+    if (!user) { return res.redirect('/'); }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      //res.locals.currentUser = req.user;
+      return res.redirect('/home');
+    });
+  })(req, res, next);
+});
+
 
 router.get('/log-out',(req, res) => {
-  req.logout();
-  res.redirect("/");
+  //req.logout();
+  //res.redirect("/");
+   if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        res.status(400).send('Unable to log out')
+      } else {
+        res.redirect("/");
+      }
+    });
+  } else {
+    req.end();
+    
+  }
+});
+
+/*
+router.get('/home',(req,res)=>{
+	res.render('home',{user:req.user});
+});*/
+
+router.get('/home',function (req,res,next) {
+	console.log("1:"+req.user);
+	if(req.user !== undefined)
+	{
+		console.log("reach");
+		message_controller.message_list(req,res,next);
+	}
+	else
+	{
+		console.log("2:"+req.user);
+		res.redirect('/');
+	}
+
 });
 
 
-router.get('/create-message',(req,res)=>{
+//router.get('/create-message', message_controller.create_message_get);
+
+router.get('/create-message',function (req,res,next) {
+
+	if(req.user !== undefined)
+	{
+		message_controller.create_message_get(req,res,next);
+	}
+	else
+	{
+		res.redirect('/');
+	}
 
 });
+
+router.post('/create-message',message_controller.create_message_post);
 
 router.get('/',(req, res) => {
-  res.render("index", {user:req.user});
+  res.render("index");
 });
 
 
