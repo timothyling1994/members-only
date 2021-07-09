@@ -4,7 +4,7 @@ var Message = require('../models/message');
 var async = require('async');
 
 exports.message_list = function(req,res,next){
-	console.log("reach1");
+
 	Message.find({}).populate('username').exec(function(err,list_messages){
 		if(err)
 		{
@@ -14,8 +14,9 @@ exports.message_list = function(req,res,next){
 		let sortedArr = list_messages.sort(function(a,b){
 			return new Date(b.timestamp) - new Date(a.timestamp);
 		});
+		console.log(req.user.status);
 
-		res.render('home',{list_messages:sortedArr});
+		res.render('home',{list_messages:sortedArr, status: req.user.status});
 	});
 };
 
@@ -38,8 +39,7 @@ exports.create_message_post = [
 
 		else
 		{
-			console.log(res.locals.currentUser);
-			//User.find({username:req.user}).exec(function(err,user){
+		
 				let message = new Message(
 				{
 					title: req.body.title,

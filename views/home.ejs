@@ -10,8 +10,7 @@
       <div class="nav-header"><a href="/home">Members Only</a></div>
       <div class="nav-bar-btn-container">
         <div class="nav-bar-btn"><a href="/create-message">Create Message</a></div>
-        <div class="nav-bar-btn"><a href="/log-out">Become a Member</a></div>
-        <div class="nav-bar-btn"><a href="/log-out">Become an Admin</a></div>
+        <div class="nav-bar-btn"><a href="/admin">Become an Admin</a></div>
         <div class="nav-bar-btn"><a href="/log-out">Log Out</a></div>
       </div>
     </div>
@@ -23,6 +22,9 @@
             <div class="message-description"><%= list_messages[i].description %></div>
             <div class="message-timestamp"><%= list_messages[i].formatted_timestamp %></div>
             <div class="message-username"><%= list_messages[i].username.username %></div>
+            <% if (status=="admin") { %>
+            <div class="message-delete"><a href="/delete-message">Delete</a></div>
+            <% } %>  
           </div>
         </div>
         <% } %>

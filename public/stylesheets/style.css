@@ -45,7 +45,7 @@ body{
 	height: 100%;
 }
 
-.log-in-header,.sign-up-header,.create-message-header{
+.log-in-header,.sign-up-header,.create-message-header,.admin-header{
 	width: 100%;
 	text-align: center;
 }
@@ -56,7 +56,7 @@ body{
 	justify-content: center;
 	width: 100%;
 }
-.message-container{
+.message-container,.image-container{
 	display: flex;
 	justify-content: center;
 	width: 100%;
@@ -68,4 +68,14 @@ body{
 	padding: 0.5em;
 	text-align: center;
 	border: solid black 2px;
+}
+
+.password-container{
+	display: flex;
+	justify-content: center;
+}
+
+.message-image{
+	height: 20vh;
+	width: auto;
 }

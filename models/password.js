@@ -2,10 +2,8 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
-	username: {type:String, required:true},
+var PasswordSchema = new Schema({
 	password: {type:String,required:true},
-	status: {type:String, required:true},
 });
 
 /*
@@ -13,4 +11,4 @@ UserSchema.virtual('url').get(function(){
 	return '/catalog/user/' + this._id;
 });*/
 
-module.exports = mongoose.model('User',UserSchema);
+module.exports = mongoose.model('Password',PasswordSchema);
